@@ -46,7 +46,7 @@ SELECT department, name, COUNT(*)
 FROM staff 
 GROUP BY department, name
 
---GROUP BY WITH WHERE 
+--GROUP BY WITH WHERE clause 
 SELECT 
     department,
     COUNT(*) AS active_staff,
@@ -56,3 +56,33 @@ FROM staff
 WHERE status = 'active'
 GROUP BY department 
 ORDER BY active_payroll DESC;
+
+--HAVING clause 
+SELECT departmen, ROUND(AVG(salary)) AS avarage_salary
+FROM staff 
+GROUP BY department 
+HAVING AVG(salary) > 130000;
+--Having filters GROUP BY  data compared to where which fileters column data
+
+--groups departments and filters them with deprtments that have staff_count > 2 
+SELECT DEPARTMENT, COUNT(*) AS staff_count 
+FROM staff 
+GROUP BY department 
+HAVING COUNT(*) > 2
+
+--Multiple commands with HAVING 
+SELECT department, SUM(salary) AS total_salary
+FROM staff 
+WHERE status = 'active'
+GROUP BY department 
+ORDER BY total_salary  > 130000;
+
+
+--filters department with total_salary greater than 130000
+--1. FROM      → which table to read from
+--2. WHERE     → filter individual rows
+--3. GROUP BY  → divide remaining rows into groups
+--4. HAVING    → filter groups
+--5. SELECT    → choose which columns and aggregates to show
+--6. ORDER BY  → sort the final result
+--7. LIMIT     → cap how many rows to return
