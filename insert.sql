@@ -86,3 +86,11 @@ ORDER BY total_salary  > 130000;
 --5. SELECT    → choose which columns and aggregates to show
 --6. ORDER BY  → sort the final result
 --7. LIMIT     → cap how many rows to return
+
+--Understanding Wildcards % and _ 
+--% returns one or more characters ahead or behind a certain character
+--_ returns only a single character behind or ahead or a certain character
+
+
+--AGGREGATE FUNCTIONS 
+
