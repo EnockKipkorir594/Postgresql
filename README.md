@@ -58,7 +58,7 @@ INNER JOIN payroll p ON e.id = p.employee_id
 WHERE a.date BETWEEN 2019-01-01 AND 2025-12-31
 ORDER BY e.full_name, a.date;
 ```
-### Practive Exercises
+### Practice Exercises
 
 * Show all employees with their username and emailfrom the users table. Use INNER JOIN.
 
