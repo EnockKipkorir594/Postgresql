@@ -157,6 +157,61 @@ INNER JOIN attendance ON e.id = a.employee_id
 WHERE e.status = 'active'
 GROUP BY e.department;
 ```
+### Day 9 Larning Subquries and CTES
+What is a subquery ? 
+Is a complete SELECT statement written inside another SELCET statement. The inner query runs first 
+and produces a result. The outer query then uses the result as part of its own logic.
+
+**Subquery in the WHERE clause** 
+```sql
+SELECT
+  full_name,
+  department,
+  basic_salary
+FROM employees
+WHERE basic_salary > (
+  SELECT AVG(basic_salary)
+  FROM employees
+);
+```
+**Subquery returning mutliple values -IN**
+```sql
+SELECT
+  username,
+  email
+FROM users
+WHERE id IN (
+  SELECT user_id
+  FROM employees
+  WHERE id IN (
+    SELECT employee_id
+    FROM payroll
+    WHERE month = 'April-2025
+  )
+);
+
+```
+**Subquery in the FROM clause - Derived Tables**
+```sql
+SELECT
+  dept_summary.department,
+  dept_summary.avg_salary
+FROM(
+  SELECT
+    department,
+    ROUND(AVG(basic_salary), 2) AS avg_salary
+    FROM employees
+    GROUP BY department
+) AS dept_summary
+WHERE dept_summary.avg_salary > (
+    SELECT AVG(basic_salary) FROM employees
+
+);
+```
+
+
+
+
 
 
 
