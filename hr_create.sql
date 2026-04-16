@@ -111,4 +111,61 @@ WHERE p.month = 'April-2025'
 GROUP BY  e.department
 ORDER BY total_net DESC;
 
+--correlated subqueries 
+--A correlated subquery references a column from the outer query
+SELECT 
+    e1.full_name,
+    e1.department,
+    e1.basic_salary
+FROM employees e1 
+WHERE e1.basic_salary > (
+    SELECT AVG(e2.basic_salary)
+    FROM employees e2 
+    WHERE e2.department = e1.department
+);
+
+--EXISTS AND NOT EXISTS
+--EXISTS checks whether a subquery returns any rows at all 
+
+--Find all employees who have at least one attendance record
+SELECT full_name, department
+FROM employees e 
+WHERE EXISTS(
+    SELECT 1 
+    FROM attendance a 
+    WHERE a.employee_id = e.id
+);
+
+--Find employees with no attendance record
+SELECT full_name, department
+FROM employees e 
+WHERE NOT EXISTS(
+    SELECT 1 
+    FROM attendance a 
+    WHERE a.employee_id = e.id
+);
+
+--CTEs(Common Table Expressions)
+--What are CTEs?
+--A CTE is a named temporary result set that you define at the
+-- beginning of a query and reference by name within that query. 
+WITH department_avarages AS(
+    SELECT 
+        department,
+        ROUND(AVG(basic_salary), 2) AS avg_salary
+    FROM employees
+    GROUP BY department
+),
+company_avarage AS (
+    SELECT ROUND(AVG(basic_salary)) AS avg 
+    FROM employees
+)
+SELECT 
+    da.avg_salary,
+    da.department
+FROM department_avarages da, company_avarage ca 
+WHERE da.avg_salary > ca.avg
+ORDER BY da.avg_salary DESC;
+
+
 
