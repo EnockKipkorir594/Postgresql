@@ -1,7 +1,7 @@
 # Learning Postgresql
 Today is day 8 of learning postgresql these are some of the commands I learned today:
 
-- **INNER JOIN** : joins two tables based on a related column
+- **INNER JOIN** : returns only rows where a match exists in both tables
 - **LEFT JOIN** : returns all rows from the left table
 - **RIGHT JOIN**: returns all rows from the right table
 
