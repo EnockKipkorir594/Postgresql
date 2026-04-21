@@ -208,6 +208,10 @@ WHERE dept_summary.avg_salary > (
 
 );
 ```
+## Day 10 
+Today we are taking a deep dive on window functions. Window functions ? 
+They perform calculations across related rows without collapsing those rows.You get both the individual row detail
+and the aggregate calculation in the same result.
 
 
 
