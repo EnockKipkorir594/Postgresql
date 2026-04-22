@@ -43,3 +43,56 @@ VALUES
 ('James Richards',    'Finance',      63000,  'active',   2022, 4000);
 
 
+--LAG AND LEAD
+--LAG and LEAD allow access to previous and following rows within the partition
+SELECT 
+	full_name,
+	month,
+	net_pay,
+	LAG(net_pay) OVER(
+		PARTITION BY employee_id
+		ORDER BY month
+	)AS previous_month_pay,
+	net_pay - LAG(net_pay) OVER(
+		PARTITION BY employee_id
+		ORDER BY month
+	)AS month_to_month_pay
+
+FROM payroll
+JOIN employees ON payroll.employee_id = employees.id
+ORDER BY full_name, month;
+
+--LEAD
+SELECT 
+	full_name,
+	month,
+	net_pay,
+	LEAD(net_pay) OVER(
+		PARTITION BY employee_id
+		ORDER BY month
+	)AS next_month_pay
+FROM payroll
+JOIN employees ON payroll.employee_id = employees.id
+ORDER BY full_name, month;
+
+--FIRST_VALUE , LAST_VALUE 
+SELECT 
+	full_name,
+	deparment,
+	basic_salary,
+	FIRST_VALUE(basic_salary) OVER (
+		PARTITION BY department
+		ORDER BY basic_salary DESC
+	)AS top_highest_earner,
+	FIRST_VALUE(full_name) OVER(
+		PARTITION BY department
+		ORDER BY basic_salary DESC
+	)AS name_of_top_earner
+
+FROM employees
+ORDER BY department, basic_salary DESC;
+
+--NTILE - Dividing Into Buckets
+--NTILE divided rows within a partition into a specified number of roughly equal groups
+--and assigns a group to each row
+

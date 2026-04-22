@@ -92,5 +92,93 @@ ORDER BY total_salary  > 130000;
 --_ returns only a single character behind or ahead or a certain character
 
 
---AGGREGATE FUNCTIONS 
+--WINDOW FUNCTIONS
+SELECT 
+    full_name,
+    deparment,
+    basic_salary,
+    ROW_RANK OVER(
+        PARTITION BY department
+        ORDER BY basic_salary DESC
+    ) AS rank_num
 
+FROM employees
+ORDER BY department, basic_salary DESC;
+
+--RANK --> Rank With Gaps On Ties 
+SELECT 
+    full_name,
+    department,
+    basic_salary,
+    RANK() OVER(
+        PARTITION BY department
+        ORDER BY basic_salary DESC
+    )AS salary_rank
+FROM employees
+ORDER BY department, salary_rank;
+
+--RANK --> Without Gaps On Ties
+SELECT 
+    full_name,
+    department,
+    basic_salary,
+    RANK() OVER(ORDER BY basic_salary DESC) AS rank_with_gaps,
+    DENSE_RANK() OVER(ORDER BY basic_salary DESC) AS rank_no_gaps
+FROM employees
+ORDER BY basic_salary DESC;
+
+--Finding the top earner for the department 
+WITH ranked_employees AS(
+    SELECT 
+        full_name,
+        department,
+        basic_salary,
+        RANK() OVER(
+            PARTITION BY department
+            ORDER BY basic_salary DESC
+        )AS salary_rank
+    FROM employees
+    WHERE status = 'active'
+)
+SELECT full_name, department, basic_salary
+FROM ranked_employees
+WHERE salary_rank = 1 
+ORDER BY department;
+
+--AGGREGATE WINDOW FUNCTIONS
+--SUM AS a window function - Running Total
+SELECT 
+    full_name,
+    month,
+    net_pay,
+    SUM(net_pay) OVER (
+        PARTITION BY employee_id 
+        ORDER BY month
+    )AS running_total 
+FROM payroll
+JOIN employees ON payroll.employee_id = employees.id
+ORDER BY full_name, month;
+
+--AVARAGE AS a window function
+SELECT
+    full_name,
+    department,
+    basic_salary,
+    ROUND(AVG(basic_salary) OVER(
+        PARTITION BY department
+    ),2) AS avg_basic_salary,
+    basic_salary - ROUND(AVG(basic_salary) OVER(
+        PARTITION BY department
+    ),2) AS diff_avg_salary
+FROM employees
+ORDER BY full_name, basic_salary DESC;
+
+--COUNT AS window function 
+SELECT 
+    full_name,
+    deparment,
+    COUNT(*) OVER (
+        PARTITION BY deparment
+    )AS team_size
+FROM employees
+ORDER BY deparment;
