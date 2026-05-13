@@ -160,6 +160,7 @@ JOIN employees ON payroll.employee_id = employees.id
 ORDER BY full_name, month;
 
 --AVARAGE AS a window function
+--Query retrieves the avarage basic salary and full names of employees
 SELECT
     full_name,
     department,
@@ -174,6 +175,7 @@ FROM employees
 ORDER BY full_name, basic_salary DESC;
 
 --COUNT AS window function 
+--Retrieves number of employees per department in order of department 
 SELECT 
     full_name,
     deparment,
